@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "FlfkQNEbshE7tGzq4/gX51irZdFL0LREMVXjvEgJ9uI=",
+  "Source": "PharamaAPI",
+  "BasePath": "_content/PharamaAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
