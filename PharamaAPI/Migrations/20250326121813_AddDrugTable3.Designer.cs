@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PharmaAPI.Services;
 
@@ -11,9 +12,11 @@ using PharmaAPI.Services;
 namespace PharamaAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250326121813_AddDrugTable3")]
+    partial class AddDrugTable3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,13 +54,13 @@ namespace PharamaAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1",
+                            Id = "f6c5487a-cc1d-41d9-b804-f3f3b2af6598",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "2",
+                            Id = "b4682f03-1513-4c21-9bb9-35f3a52f01de",
                             Name = "Doctor",
                             NormalizedName = "DOCTOR"
                         });
@@ -207,10 +210,6 @@ namespace PharamaAPI.Migrations
 
                     b.Property<int>("DrugId")
                         .HasColumnType("int");
-
-                    b.Property<string>("DrugName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");

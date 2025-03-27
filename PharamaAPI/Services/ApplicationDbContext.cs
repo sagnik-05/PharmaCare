@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PharmaAPI.Models;
+using System;
 
 namespace PharmaAPI.Services
 {
@@ -9,24 +10,28 @@ namespace PharmaAPI.Services
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
+        public DbSet<Inventory> Inventory { get; set; }
+        public DbSet<Drug> Drugs { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
+            // Seeding roles with GUIDs
             builder.Entity<IdentityRole>().HasData(
-        new IdentityRole
-        {
-            Id = "1",  
-            Name = "Admin",
-            NormalizedName = "ADMIN"
-        },
-        new IdentityRole
-        {
-            Id = "2", 
-            Name = "Doctor",
-            NormalizedName = "DOCTOR"
-        }
-    );
+                new IdentityRole
+                {
+                    Id = "1",
+                    Name = "Admin",
+                    NormalizedName = "ADMIN"
+                },
+                new IdentityRole
+                {
+                    Id = "2",
+                    Name = "Doctor",
+                    NormalizedName = "DOCTOR"
+                }
+            );
         }
     }
 }

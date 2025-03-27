@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PharmaAPI.Services;
 
@@ -11,9 +12,11 @@ using PharmaAPI.Services;
 namespace PharamaAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250326121533_AddDrugTable2")]
+    partial class AddDrugTable2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,13 +54,13 @@ namespace PharamaAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1",
+                            Id = "c2e221fd-2ef9-4096-a3e6-04e480a7d34c",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "2",
+                            Id = "f39a5a40-b959-4bca-abe0-266d5468555a",
                             Name = "Doctor",
                             NormalizedName = "DOCTOR"
                         });
@@ -194,7 +197,7 @@ namespace PharamaAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Drugs");
+                    b.ToTable("Drug");
                 });
 
             modelBuilder.Entity("PharmaAPI.Models.Inventory", b =>
@@ -207,10 +210,6 @@ namespace PharamaAPI.Migrations
 
                     b.Property<int>("DrugId")
                         .HasColumnType("int");
-
-                    b.Property<string>("DrugName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");

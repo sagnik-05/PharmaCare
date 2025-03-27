@@ -31,11 +31,10 @@ namespace PharmaAPI.Controllers
             if (token == null)
                 return Unauthorized("Invalid credentials.");
 
-            return Ok(new { Token = token });
+            return Ok(new { Token = token, Message = "Login successful." });
         }
 
         [HttpGet("user")]
-        [Authorize(Roles = "Admin,Doctor")]
         public IActionResult GetUser()
         {
             return Ok(new { Message = "Authorized Access" });

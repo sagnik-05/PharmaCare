@@ -45,6 +45,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization();
 // Register AuthRepository as the concrete implementation of IAuthService
 builder.Services.AddScoped<IAuthService, AuthRepository>();
+// Register InventoryRepository as the concrete implementation of IInventoryRepository  
+builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
 
 // Register AuthService separately (without injecting itself)
 builder.Services.AddScoped<AuthService>();
@@ -60,7 +62,7 @@ if (app.Environment.IsDevelopment())
 // 🔹 Configure Middleware
 //app.UseHttpsRedirection();
 app.UseAuthentication();
-app.UseAuthorization(); // 🛠 This was failing because `AddAuthorization()` was missing.
+app.UseAuthorization();
 
 app.MapControllers();
 

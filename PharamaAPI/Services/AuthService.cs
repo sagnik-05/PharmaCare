@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 
 namespace PharmaAPI.Services
 {
-    public class AuthService : IAuthService  // ✅ Implements IAuthService
+    public class AuthService : IAuthService  
     {
-        private readonly IAuthService _authRepository;  // ✅ Keep Interface Reference
+        private readonly IAuthService _authRepository;  
 
         public AuthService(IAuthService authRepository)  
         {

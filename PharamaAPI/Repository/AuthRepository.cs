@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 namespace PharmaAPI.Repository
 {
-    public class AuthRepository : IAuthService  // ✅ Implements IAuthService
+    public class AuthRepository : IAuthService
     {
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -32,9 +32,8 @@ namespace PharmaAPI.Repository
 
             if (!result.Succeeded)
             {
-                // 🔹 Capture detailed errors
                 string errors = string.Join(", ", result.Errors.Select(e => e.Description));
-                return $"Registration failed: {errors}";  // ✅ Now shows the actual error
+                return $"Registration failed: {errors}"; 
             }
 
             if (!await _roleManager.RoleExistsAsync(model.Role))
