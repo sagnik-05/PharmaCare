@@ -12,6 +12,8 @@ namespace PharmaAPI.Services
 
         public DbSet<Inventory> Inventory { get; set; }
         public DbSet<Drug> Drugs { get; set; }
+        public DbSet<Sales> Sales { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -32,6 +34,11 @@ namespace PharmaAPI.Services
                     NormalizedName = "DOCTOR"
                 }
             );
+            builder.Entity<Sales>()
+            .HasOne(s => s.Drug)
+            .WithMany()
+            .HasForeignKey(s => s.DrugId);
+
         }
     }
 }

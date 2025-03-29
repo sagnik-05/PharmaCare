@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PharmaAPI.Services;
 
@@ -11,9 +12,11 @@ using PharmaAPI.Services;
 namespace PharamaAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250329135554_AddDrugTable105")]
+    partial class AddDrugTable105
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -222,37 +225,6 @@ namespace PharamaAPI.Migrations
                     b.ToTable("Inventory");
                 });
 
-            modelBuilder.Entity("PharmaAPI.Models.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("DoctorId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DrugId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("PlacedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DrugId");
-
-                    b.ToTable("Orders");
-                });
-
             modelBuilder.Entity("PharmaAPI.Models.Sales", b =>
                 {
                     b.Property<int>("SalesId")
@@ -402,17 +374,6 @@ namespace PharamaAPI.Migrations
                 });
 
             modelBuilder.Entity("PharmaAPI.Models.Inventory", b =>
-                {
-                    b.HasOne("PharmaAPI.Models.Drug", "Drug")
-                        .WithMany()
-                        .HasForeignKey("DrugId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Drug");
-                });
-
-            modelBuilder.Entity("PharmaAPI.Models.Order", b =>
                 {
                     b.HasOne("PharmaAPI.Models.Drug", "Drug")
                         .WithMany()

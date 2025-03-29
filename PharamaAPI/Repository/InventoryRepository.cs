@@ -48,7 +48,7 @@ namespace PharmaAPI.Repository
             }
 
             // Check if the drug already exists in inventory
-            var existingInventory = await _context.Inventory.FirstOrDefaultAsync(i => i.DrugId == drug.Id);
+            var existingInventory = await _context.Inventory.FirstOrDefaultAsync(i => i.DrugId == drug.DrugId);
 
             if (existingInventory != null)
             {
@@ -58,7 +58,7 @@ namespace PharmaAPI.Repository
             {
                 var inventoryItem = new Inventory
                 {
-                    DrugId = drug.Id,
+                    DrugId = drug.DrugId,
                     DrugName = drug.Name,
                     Quantity = quantity
                 };

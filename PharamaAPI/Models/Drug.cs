@@ -5,7 +5,7 @@ namespace PharmaAPI.Models
     public class Drug
     {
         [Key]
-        public int Id { get; set; }
+        public int DrugId { get; set; }
 
         [Required]
         [MaxLength(100)]

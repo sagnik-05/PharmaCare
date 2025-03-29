@@ -8,6 +8,8 @@ using PharmaAPI.Services;
 using PharmaAPI.Interface;
 using PharmaAPI.Repository;
 using System.Text;
+using Microsoft.OpenApi.Models;
+using PharmaAPI.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,15 +42,50 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
         };
     });
+// builder.Services.AddSwaggerGen(c =>
+// {
+//     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Authentication", Version = "v1" });
+//     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+//     {
+//         In = ParameterLocation.Header,
+//         Description = "Insert token",
+//         Name = "Auth",
+//         Type = SecuritySchemeType.Http,
+//         BearerFormat = "JWT",
+//         Scheme = "bearer"
+//     });
+//     c.AddSecurityRequirement(new OpenApiSecurityRequirement
+//     {
+//         {
+//             new OpenApiSecurityScheme
+//             {
+//                 Reference = new OpenApiReference
+//                 {
+//                     Type = ReferenceType.SecurityScheme,
+//                     Id = "Bearer"
+//                 }
+//             },
+//             new String[]{}
+//         }
+//     });
+// });
 
 // 🔹 Add Authorization (Fix)
-builder.Services.AddAuthorization();
+// builder.Services.AddAuthorization(options =>
+// {
+//     options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+// });
 // Register AuthRepository as the concrete implementation of IAuthService
 builder.Services.AddScoped<IAuthService, AuthRepository>();
 // Register InventoryRepository as the concrete implementation of IInventoryRepository  
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
-
+// Register DrugRepository as the concrete implementation of IDrugService
+builder.Services.AddScoped<IDrugRepository, DrugRepository>();
+builder.Services.AddScoped<ISalesRepository, SalesRepository>(); 
+// Register OrderRepository as the concrete implementation of IOrderRepository
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 // Register AuthService separately (without injecting itself)
+
 builder.Services.AddScoped<AuthService>();
 var app = builder.Build();
 
