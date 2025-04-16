@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PharamaAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cda83a3c240654bae7a7124bc5f83cd5c263f8aa")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e302c2b9224bce18c44bbd5cc5d71506ff246dcf")]
 [assembly: System.Reflection.AssemblyProductAttribute("PharamaAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PharamaAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

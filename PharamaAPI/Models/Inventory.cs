@@ -11,10 +11,12 @@ namespace PharmaAPI.Models
         [Required]
         [ForeignKey("Drug")]
         public int DrugId { get; set; }
-        public Drug Drug { get; set; } // Navigation property
+        public Drug Drug { get; set; }
 
         [Required]
-        public string DrugName { get; set; }
+        [ForeignKey("Supplier")]
+        public int SupplierId { get; set; }
+        public Supplier Supplier { get; set; }
 
         [Required]
         public int Quantity { get; set; }

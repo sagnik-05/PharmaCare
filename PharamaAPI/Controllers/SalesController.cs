@@ -2,74 +2,91 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PharmaAPI.DTO;
 using PharmaAPI.Interface;
+using System;
 using System.Threading.Tasks;
 
 namespace PharmaAPI.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/sales")]
 public class SalesController : ControllerBase
 {
-    private readonly ISalesRepository _saleRepository; // ✅ Inject ISaleRepository
+    private readonly ISalesRepository _saleRepository; 
 
     public SalesController(ISalesRepository saleRepository) 
     {
         _saleRepository = saleRepository;
     }
 
-    [HttpGet]
-    //[Authorize(Roles = "Admin")]
+    [HttpGet("view")]
     public async Task<IActionResult> GetSales()
     {
-        var sales = await _saleRepository.GetSalesAsync();
-        return Ok(sales);
+        try
+        {
+            var sales = await _saleRepository.GetSalesAsync();
+            return Ok(sales);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Message = "An unexpected error occurred.", Details = ex.Message });
+        }
     }
 
-    [HttpGet("{id}")]
-    //[Authorize(Roles = "Admin")]
+    [HttpGet("view/{id}")]
     public async Task<IActionResult> GetSale(int id)
     {
-        var sale = await _saleRepository.GetSaleAsync(id);
-        if (sale == null)
+        try
         {
-            return NotFound();
+            var sale = await _saleRepository.GetSaleAsync(id);
+            if (sale == null)
+            {
+                return NotFound(new { Message = "Sale not found." });
+            }
+            return Ok(sale);
         }
-        return Ok(sale);
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Message = "An unexpected error occurred.", Details = ex.Message });
+        }
     }
 
-    [HttpPost]
-    //[Authorize(Roles = "Admin")]
-    public async Task<IActionResult> CreateSale([FromBody] CreateSaleDTO createSaleDTO)
-    {
-        var sale = await _saleRepository.CreateSaleAsync(createSaleDTO);
-        if (sale == null)
-        {
-            return BadRequest("Failed to create sale.");
-        }
-        return Ok(sale);
-    }
-
-    [HttpPut("{id}")]
-    //[Authorize(Roles = "Admin")]
+    [HttpPut("update/{id}")]
     public async Task<IActionResult> UpdateSale(int id, [FromBody] UpdateSaleDTO updateSaleDTO)
     {
-        var sale = await _saleRepository.UpdateSaleAsync(id, updateSaleDTO);
-        if (sale == null)
+        try
         {
-            return NotFound();
+            var sale = await _saleRepository.UpdateSaleAsync(id, updateSaleDTO);
+            if (sale == null)
+            {
+                return NotFound(new { Message = "Sale not found." });
+            }
+            return Ok(sale);
         }
-        return Ok(sale);
+        catch (ArgumentException ex)
+        {
+            return BadRequest(new { Message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Message = "An unexpected error occurred.", Details = ex.Message });
+        }
     }
 
-    [HttpDelete("{id}")]
-    //[Authorize(Roles = "Admin")]
+    [HttpDelete("delete/{id}")]
     public async Task<IActionResult> DeleteSale(int id)
     {
-        var result = await _saleRepository.DeleteSaleAsync(id);
-        if (!result)
+        try
         {
-            return NotFound();
+            var result = await _saleRepository.DeleteSaleAsync(id);
+            if (!result)
+            {
+                return NotFound(new { Message = "Sale not found." });
+            }
+            return NoContent();
         }
-        return NoContent();
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Message = "An unexpected error occurred.", Details = ex.Message });
+        }
     }
 }

@@ -18,7 +18,7 @@ public class SalesRepository : ISalesRepository
     {
         _context = context;
     }
-
+    // Fetch all sales data with Drug & Supplier details
     public async Task<IEnumerable<SaleDTO>> GetSalesAsync()
     {
         var sales = await _context.Sales.ToListAsync();
@@ -31,7 +31,7 @@ public class SalesRepository : ISalesRepository
             DrugId = s.DrugId
         }).ToList();
     }
-
+    // Fetch sales by Drug ID
     public async Task<SaleDTO> GetSaleAsync(int salesId)
     {
         var sale = await _context.Sales.FindAsync(salesId);
@@ -47,30 +47,7 @@ public class SalesRepository : ISalesRepository
             DrugId = sale.DrugId
         };
     }
-
-    public async Task<SaleDTO> CreateSaleAsync(CreateSaleDTO createSaleDTO)
-    {
-        var sale = new Sales
-        {
-            Date = createSaleDTO.Date,
-            TotalSales = createSaleDTO.TotalSales,
-            FilePath = createSaleDTO.FilePath,
-            DrugId = createSaleDTO.DrugId
-        };
-
-        _context.Sales.Add(sale);
-        await _context.SaveChangesAsync();
-
-        return new SaleDTO
-        {
-            SalesId = sale.SalesId,
-            Date = sale.Date,
-            TotalSales = sale.TotalSales,
-            FilePath = sale.FilePath,
-            DrugId = sale.DrugId
-        };
-    }
-
+    // Update a sale (Ensure Drug exists)
     public async Task<SaleDTO> UpdateSaleAsync(int salesId, UpdateSaleDTO updateSaleDTO)
     {
         var sale = await _context.Sales.FindAsync(salesId);
@@ -109,7 +86,7 @@ public class SalesRepository : ISalesRepository
             DrugId = sale.DrugId
         };
     }
-
+    // Delete a sale data
     public async Task<bool> DeleteSaleAsync(int salesId)
     {
         var sale = await _context.Sales.FindAsync(salesId);

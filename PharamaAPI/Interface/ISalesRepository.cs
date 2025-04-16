@@ -8,7 +8,6 @@ namespace PharmaAPI.Interface
     {
         Task<IEnumerable<SaleDTO>> GetSalesAsync();
         Task<SaleDTO> GetSaleAsync(int saleId);
-        Task<SaleDTO> CreateSaleAsync(CreateSaleDTO createSaleDTO);
         Task<SaleDTO> UpdateSaleAsync(int saleId, UpdateSaleDTO updateSaleDTO);
         Task<bool> DeleteSaleAsync(int saleId); 
     }

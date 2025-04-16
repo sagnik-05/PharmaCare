@@ -15,12 +15,12 @@ namespace PharmaAPI.DTOs
     {
         public int DoctorId { get; set; }
         public int DrugId { get; set; }
+         public string DrugName { get; set; }
         public int Quantity { get; set; }
     }
 
     public class UpdateOrderDTO
     {
-        public int Quantity { get; set; }
         public string Status { get; set; }
     }
 }

@@ -18,6 +18,6 @@ namespace PharmaAPI.Models
         public decimal Price { get; set; }
 
         [Required]
-        public int Stock { get; set; } // Tracks available quantity
+        public int Stock { get; set; } 
     }
 }

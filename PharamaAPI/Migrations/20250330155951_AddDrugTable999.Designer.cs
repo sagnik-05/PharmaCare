@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PharmaAPI.Services;
 
@@ -11,9 +12,11 @@ using PharmaAPI.Services;
 namespace PharamaAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250330155951_AddDrugTable999")]
+    partial class AddDrugTable999
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -195,26 +198,6 @@ namespace PharamaAPI.Migrations
                     b.HasKey("DrugId");
 
                     b.ToTable("Drugs");
-                });
-
-            modelBuilder.Entity("PharmaAPI.Models.DrugRequest", b =>
-                {
-                    b.Property<int>("RequestId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RequestId"));
-
-                    b.Property<string>("DrugName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsApproved")
-                        .HasColumnType("bit");
-
-                    b.HasKey("RequestId");
-
-                    b.ToTable("DrugRequests");
                 });
 
             modelBuilder.Entity("PharmaAPI.Models.Inventory", b =>

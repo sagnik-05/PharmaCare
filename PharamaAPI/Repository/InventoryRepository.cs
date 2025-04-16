@@ -16,51 +16,56 @@ namespace PharmaAPI.Repository
             _context = context;
         }
 
-        // ✅ Fetch all drugs in inventory (with both ID and Name)
+        // Fetch all inventory data with Drug & Supplier details
         public async Task<IEnumerable<Inventory>> GetAllInventoryAsync()
         {
-            return await _context.Inventory.Include(i => i.Drug).ToListAsync();
+            return await _context.Inventory
+                .Include(i => i.Drug)
+                .Include(i => i.Supplier)
+                .ToListAsync();
         }
 
-        // ✅ Fetch a specific drug from inventory by DrugId
+        // Fetch inventory by Drug ID
         public async Task<Inventory> GetInventoryByDrugIdAsync(int drugId)
         {
-            return await _context.Inventory.Include(i => i.Drug)
-                                           .FirstOrDefaultAsync(i => i.DrugId == drugId);
+            return await _context.Inventory
+                .Include(i => i.Drug)
+                .Include(i => i.Supplier)
+                .FirstOrDefaultAsync(i => i.DrugId == drugId);
         }
 
-        // ✅ Fetch a specific drug from inventory by DrugName
+        // Fetch inventory by Drug Name
         public async Task<Inventory> GetInventoryByDrugNameAsync(string drugName)
         {
-            return await _context.Inventory.Include(i => i.Drug)
-                                           .FirstOrDefaultAsync(i => i.DrugName == drugName);
+            return await _context.Inventory
+                .Include(i => i.Drug)
+                .Include(i => i.Supplier)
+                .FirstOrDefaultAsync(i => i.Drug.Name == drugName);
         }
 
-        // ✅ Add a drug to inventory using DrugName (API will auto-fetch DrugId)
-        public async Task<bool> AddDrugToInventoryAsync(string drugName, int quantity)
+        // Add a drug to inventory (Ensure Supplier & Drug exist)
+        public async Task<bool> AddDrugToInventoryAsync(string drugName, int supplierId, int quantity)
         {
             var drug = await _context.Drugs.FirstOrDefaultAsync(d => d.Name == drugName);
+            if (drug == null) return false;
 
-            if (drug == null)
-            {
-                Console.WriteLine($"Drug '{drugName}' not found in the database.");
-                return false; // Drug does not exist
-            }
+            var supplier = await _context.Suppliers.FindAsync(supplierId);
+            if (supplier == null) return false;
 
-            // Check if the drug already exists in inventory
-            var existingInventory = await _context.Inventory.FirstOrDefaultAsync(i => i.DrugId == drug.DrugId);
+            var existingInventory = await _context.Inventory
+                .FirstOrDefaultAsync(i => i.DrugId == drug.DrugId && i.SupplierId == supplierId);
 
             if (existingInventory != null)
             {
-                existingInventory.Quantity += quantity; // Update quantity if already exists
+                existingInventory.Quantity += quantity;
             }
             else
             {
                 var inventoryItem = new Inventory
                 {
                     DrugId = drug.DrugId,
-                    DrugName = drug.Name,
-                    Quantity = quantity
+                    SupplierId = supplierId,
+                    Quantity = drug.Stock + quantity
                 };
                 _context.Inventory.Add(inventoryItem);
             }
@@ -69,15 +74,36 @@ namespace PharmaAPI.Repository
             return true;
         }
 
-        // ✅ Update drug stock quantity using DrugName
+        // Update existing drug stock in inventory
         public async Task<bool> UpdateDrugQuantityAsync(string drugName, int newQuantity)
         {
-            var inventoryItem = await _context.Inventory.FirstOrDefaultAsync(i => i.DrugName == drugName);
+            var inventoryItem = await _context.Inventory
+                .Include(i => i.Drug)
+                .FirstOrDefaultAsync(i => i.Drug.Name == drugName);
+
             if (inventoryItem == null) return false;
 
             inventoryItem.Quantity = newQuantity;
             await _context.SaveChangesAsync();
             return true;
         }
+        // keyword search for drug names in inventory
+        public async Task<List<Inventory>> GetKeywordAsync(string drugName)
+        {
+            return await _context.Inventory.Include(i => i.Drug)
+                                        .Where(i => i.Drug.Name.StartsWith(drugName))
+                                        .ToListAsync();
+        }
+        // delete drug
+        public async Task<bool> DeleteDrugFromInventoryAsync(int drugId)
+        {
+            var inventoryItem = await _context.Inventory.FindAsync(drugId);
+            if (inventoryItem == null) return false;
+
+            _context.Inventory.Remove(inventoryItem);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
     }
 }

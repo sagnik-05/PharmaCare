@@ -9,7 +9,9 @@ namespace PharmaAPI.Interface
         Task<IEnumerable<Inventory>> GetAllInventoryAsync();
         Task<Inventory> GetInventoryByDrugIdAsync(int drugId);
         Task<Inventory> GetInventoryByDrugNameAsync(string drugName);
-        Task<bool> AddDrugToInventoryAsync(string drugName, int quantity);
+        Task<bool> AddDrugToInventoryAsync(string drugName, int supplierId, int quantity);
         Task<bool> UpdateDrugQuantityAsync(string drugName, int newQuantity);
+        Task<List<Inventory>> GetKeywordAsync(string drugName);
+        Task<bool> DeleteDrugFromInventoryAsync(int drugId);
     }
 }

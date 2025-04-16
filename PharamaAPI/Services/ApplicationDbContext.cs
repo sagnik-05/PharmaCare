@@ -12,14 +12,13 @@ namespace PharmaAPI.Services
 
         public DbSet<Inventory> Inventory { get; set; }
         public DbSet<Drug> Drugs { get; set; }
+        public DbSet<DrugRequest> DrugRequests { get; set; }
         public DbSet<Sales> Sales { get; set; }
         public DbSet<Order> Orders { get; set; }
-
+        public DbSet<Supplier> Suppliers { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            // Seeding roles with GUIDs
             builder.Entity<IdentityRole>().HasData(
                 new IdentityRole
                 {
@@ -39,6 +38,15 @@ namespace PharmaAPI.Services
             .WithMany()
             .HasForeignKey(s => s.DrugId);
 
+            builder.Entity<Inventory>()
+            .HasOne(i => i.Drug)
+            .WithMany()
+            .HasForeignKey(i => i.DrugId);
+
+            builder.Entity<Order>()
+            .HasOne(o => o.Drug)
+            .WithMany()
+            .HasForeignKey(o => o.DrugId);
         }
     }
 }

@@ -162,6 +162,7 @@ C:\Users\sagnik panda\Desktop\PharmaCare\PharamaAPI\obj\Debug\net9.0\PharamaAPI.
 C:\Users\sagnik panda\Desktop\PharmaCare\PharamaAPI\obj\Debug\net9.0\PharamaAPI.csproj.CoreCompileInputs.cache
 C:\Users\sagnik panda\Desktop\PharmaCare\PharamaAPI\obj\Debug\net9.0\PharamaAPI.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\sagnik panda\Desktop\PharmaCare\PharamaAPI\obj\Debug\net9.0\PharamaAPI.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\sagnik panda\Desktop\PharmaCare\PharamaAPI\obj\Debug\net9.0\PharamaAPI.sourcelink.json
 C:\Users\sagnik panda\Desktop\PharmaCare\PharamaAPI\obj\Debug\net9.0\scopedcss\bundle\PharamaAPI.styles.css
 C:\Users\sagnik panda\Desktop\PharmaCare\PharamaAPI\obj\Debug\net9.0\staticwebassets.build.json
 C:\Users\sagnik panda\Desktop\PharmaCare\PharamaAPI\obj\Debug\net9.0\staticwebassets.development.json
@@ -178,4 +179,3 @@ C:\Users\sagnik panda\Desktop\PharmaCare\PharamaAPI\obj\Debug\net9.0\refint\Phar
 C:\Users\sagnik panda\Desktop\PharmaCare\PharamaAPI\obj\Debug\net9.0\PharamaAPI.pdb
 C:\Users\sagnik panda\Desktop\PharmaCare\PharamaAPI\obj\Debug\net9.0\PharamaAPI.genruntimeconfig.cache
 C:\Users\sagnik panda\Desktop\PharmaCare\PharamaAPI\obj\Debug\net9.0\ref\PharamaAPI.dll
-C:\Users\sagnik panda\Desktop\PharmaCare\PharamaAPI\obj\Debug\net9.0\PharamaAPI.sourcelink.json

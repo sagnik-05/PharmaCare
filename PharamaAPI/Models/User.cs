@@ -4,6 +4,6 @@ namespace PharmaAPI.Models
 {
     public class User : IdentityUser
     {
-        public string Role { get; set; } // "Admin" or "Doctor"
+        public string Role { get; set; } 
     }
 }

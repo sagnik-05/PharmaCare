@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PharmaAPI.Services;
 
@@ -11,9 +12,11 @@ using PharmaAPI.Services;
 namespace PharamaAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250403094318_AddDrugRequestsTable069")]
+    partial class AddDrugRequestsTable069
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -199,11 +202,13 @@ namespace PharamaAPI.Migrations
 
             modelBuilder.Entity("PharmaAPI.Models.DrugRequest", b =>
                 {
-                    b.Property<int>("RequestId")
+                    b.Property<Guid>("RequestId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RequestId"));
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DrugName")
                         .IsRequired()
@@ -211,6 +216,13 @@ namespace PharamaAPI.Migrations
 
                     b.Property<bool>("IsApproved")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime>("RequestDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RequestedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("RequestId");
 

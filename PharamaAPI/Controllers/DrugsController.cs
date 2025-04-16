@@ -2,11 +2,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PharmaAPI.DTO;
 using PharmaAPI.Interface;
+using System;
 using System.Threading.Tasks;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace PharmaAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/drugs")]
     [ApiController]
     public class DrugsController : ControllerBase
     {
@@ -16,52 +19,108 @@ namespace PharmaAPI.Controllers
         {
             _drugRepository = drugRepository;
         }
-
-        [HttpGet]
+        [HttpGet("view")]
         public async Task<IActionResult> GetDrugs()
         {
-            var drugs = await _drugRepository.GetDrugsAsync();
-            return Ok(drugs);
+            try
+            {
+                var drugs = await _drugRepository.GetDrugsAsync();
+                return Ok(drugs);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "An unexpected error occurred.", Details = ex.Message });
+            }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("view/{id}")]
         public async Task<IActionResult> GetDrug(int id)
         {
-            var drug = await _drugRepository.GetDrugAsync(id);
-            if (drug == null)
-                return NotFound();
-            return Ok(drug);
+            try
+            {
+                var drug = await _drugRepository.GetDrugAsync(id);
+                if (drug == null)
+                    return NotFound(new { Message = "Drug not found." });
+
+                return Ok(drug);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "An unexpected error occurred.", Details = ex.Message });
+            }
         }
 
-        [HttpPost]
-        //[Authorize(Roles = "Admin")]
+        [HttpPost("add")]
         public async Task<IActionResult> CreateDrug([FromBody] CreateDrugDTO createDrugDTO)
         {
-            var drug = await _drugRepository.CreateDrugAsync(createDrugDTO);
-            return CreatedAtAction(nameof(GetDrug), new { id = drug.DrugId }, drug);
+            try
+            {
+                var drug = await _drugRepository.CreateDrugAsync(createDrugDTO);
+                return CreatedAtAction(nameof(GetDrug), new { id = drug.DrugId }, drug);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "An unexpected error occurred.", Details = ex.Message });
+            }
         }
 
-        [HttpPut("{id}")]
-        // [Authorize(Roles = "Admin")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateDrug(int id, [FromBody] UpdateDrugDTO updateDrugDTO)
         {
-            var result = await _drugRepository.UpdateDrugAsync(id, updateDrugDTO);
-            if (!result)
-                return NotFound();
+            try
+            {
+                var result = await _drugRepository.UpdateDrugAsync(id, updateDrugDTO);
+                if (!result)
+                    return NotFound(new { Message = "Drug not found." });
 
-            return NoContent();
+                return NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "An unexpected error occurred.", Details = ex.Message });
+            }
         }
 
-        [HttpDelete("{id}")]
-        // [Authorize(Roles = "Admin")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteDrug(int id)
         {
-            var result = await _drugRepository.DeleteDrugAsync(id);
-            if (!result)
-                return NotFound();
+            try
+            {
+                var result = await _drugRepository.DeleteDrugAsync(id);
+                if (!result)
+                    return NotFound(new { Message = "Drug not found." });
 
-            return NoContent();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "An unexpected error occurred.", Details = ex.Message });
+            }
         }
 
+        [HttpPost("request-drug")]
+        //[Authorize(Roles = "Doctor")]
+        public async Task<IActionResult> PostDrugRequest([FromBody] DrugRequestDTO model)
+        {
+            int requestId = await _drugRepository.PostDrugRequestAsync(model);
+            int quantity = model.Quantity;
+            return Ok(new { Message = "Drug request created successfully", RequestId = requestId, Quantity = quantity });
+        }
+
+        [HttpPost("approve-request")]
+        //[Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ApproveDrugRequest([FromBody] ApproveRequestDTO model)
+        {
+
+            return Ok(new { Message = "Drug request approved successfully", RequestId = model.RequestId });
+        }
     }
 }

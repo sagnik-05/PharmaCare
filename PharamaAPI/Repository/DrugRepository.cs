@@ -18,6 +18,7 @@ namespace PharmaAPI.Repository
             _context = context;
         }
 
+        // Fetch all drugs
         public async Task<IEnumerable<DrugDTO>> GetDrugsAsync()
         {
             return await _context.Drugs.Select(d => new DrugDTO
@@ -29,6 +30,7 @@ namespace PharmaAPI.Repository
                 Stock = d.Stock
             }).ToListAsync();
         }
+        // Fetch drug by ID
 
         public async Task<DrugDTO> GetDrugAsync(int drugId)
         {
@@ -45,7 +47,7 @@ namespace PharmaAPI.Repository
                 Stock = drug.Stock
             };
         }
-
+        // Create a new drug
         public async Task<DrugDTO> CreateDrugAsync(CreateDrugDTO createDrugDTO)
         {
             var drug = new Drug
@@ -68,7 +70,7 @@ namespace PharmaAPI.Repository
                 Stock = drug.Stock
             };
         }
-
+        // Update an existing drug
         public async Task<bool> UpdateDrugAsync(int drugId, UpdateDrugDTO updateDrugDTO)
         {
             var drug = await _context.Drugs.FindAsync(drugId);
@@ -77,7 +79,7 @@ namespace PharmaAPI.Repository
 
             drug.Name = updateDrugDTO.Name;
             drug.Manufacturer = updateDrugDTO.Manufacturer;
-            drug.Price = decimal.Parse(updateDrugDTO.Price);
+            drug.Price = updateDrugDTO.Price;
             drug.Stock = updateDrugDTO.Stock;
 
             _context.Entry(drug).State = EntityState.Modified;
@@ -99,7 +101,7 @@ namespace PharmaAPI.Repository
                 }
             }
         }
-
+        // Delete a drug
         public async Task<bool> DeleteDrugAsync(int drugId)
         {
             var drug = await _context.Drugs.FindAsync(drugId);
@@ -114,6 +116,23 @@ namespace PharmaAPI.Repository
         private bool DrugExists(int drugId)
         {
             return _context.Drugs.Any(e => e.DrugId == drugId);
+        }
+        public async Task<int> PostDrugRequestAsync(DrugRequestDTO model)
+        {
+            var request = new DrugRequest
+            {
+                RequestId = new Random().Next(1000, 9999), // Generate random 4-digit ID
+                DrugName = model.DrugName,
+                Quantity = model.Quantity
+            };
+
+            _context.Add(request);
+            return await Task.FromResult(request.RequestId); // Return generated ID
+        }
+
+        public async Task<bool> ApproveDrugRequestAsync(int requestId)
+        {
+            return true;
         }
     }
 }

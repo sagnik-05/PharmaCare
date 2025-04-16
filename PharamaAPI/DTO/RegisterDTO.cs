@@ -5,6 +5,6 @@ namespace PharmaAPI.DTO
         public string Email { get; set; }
         public string Name {get; set;}
         public string Password { get; set; }
-        public string Role { get; set; } // "Admin" or "Doctor"
+        public string Role { get; set; }
     }
 }
